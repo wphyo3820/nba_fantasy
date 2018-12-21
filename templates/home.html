@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper blue darken-3">
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="#">Player Rankings</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="fixed-action-btn">
+        <!-- Modal Trigger -->
+        <a class="waves-effect waves-light btn modal-trigger" href="#filter">Filter</a>
+    </div>
+    <!-- Modal Structure -->
+    <div id="filter" class="modal bottom-sheet">
+        <div class="modal-content">
+            <form action="#" method="GET" id="filter_modal">
+                <div class="row">
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="FG_PCT" />
+                            <span>FG%</span>
+                            <input type="hidden" value=0 name="FG_PCT" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="FT_PCT" />
+                            <span>FT%</span>
+                            <input type="hidden" value=0 name="FT_PCT" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="FG3M" />
+                            <span>FG3</span>
+                            <input type="hidden" value=0 name="FG3M" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="PTS" />
+                            <span>PTS</span>
+                            <input type="hidden" value=0 name="PTS" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="REB" />
+                            <span>REB</span>
+                            <input type="hidden" value=0 name="REB" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="AST" />
+                            <span>AST</span>
+                            <input type="hidden" value=0 name="AST" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="STL" />
+                            <span>STL</span>
+                            <input type="hidden" value=0 name="STL" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="BLK" />
+                            <span>BLK</span>
+                            <input type="hidden" value=0 name="BLK" />
+                        </label>
+                    </div>
+                    <div class="col s1">
+                        <label>
+                            <input type="checkbox" value=1 name="TOV" />
+                            <span>TOV</span>
+                            <input type="hidden" value=0 name="TOV" />
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="waves-effect waves-light btn" type="submit" form="filter_modal">Filter</button>
+        </div>
+    </div>
+
+    </div>
+    <div class="container">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    {% for col in col_names %}
+                    <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in ranks.iterrows() %}
+                <tr>
+                    {% for col in col_names %}
+                    <td>{{ value[col] }}</th>
+                        {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+    </script>
+</body>
+
+</html>
