@@ -5,15 +5,14 @@ from sklearn import preprocessing
 default_cols = ["FGP", "FTP", "3PM", "PPG", "RPG", "APG", "SPG", "BPG", "TPG"]
 
 
-def get_rankings(col_names: [str], n_results: int) -> pd.DataFrame:
+def get_rankings(data: pd.DataFrame, col_names: [str],
+                 n_results: int) -> pd.DataFrame:
     """
 	Creates scaled rankings based on data.csv
 	Arguments:
 		col_names: names of columns to use for calculating rank 
 		n_results: number of results to display
 	"""
-    data = pd.read_csv("data.csv")
-
     if col_names == []:
         col_names = default_cols
 

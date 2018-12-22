@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from rank import get_rankings
+from generate import generate_data
+import pandas as pd
 
 application = Flask(__name__)
 
@@ -33,7 +35,12 @@ def home():
     if request.args.get("TPG", 1, int) == 1:
         col_names.append("TPG")
 
-    ranks = get_rankings(col_names, n_results)
+    ## get latest data if no query params are given
+    if len(request.args) == 0:
+        generate_data()
+    ## read data
+    data = pd.read_csv("data.csv")
+    ranks = get_rankings(data, col_names, n_results)
     return render_template("home.html", col_names=list(ranks), ranks=ranks)
 
 
