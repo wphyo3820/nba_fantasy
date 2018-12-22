@@ -28,6 +28,11 @@ def get_players_df(year: int) -> pd.DataFrame:
 
 
 def get_player_data(responses) -> pd.DataFrame:
+    """
+    Gets a pandas dataframe that includes all player stats
+    Arguments:
+        responses: list of response byte arrays
+    """
     result = []
     for p in responses:
         data = p.decode("utf8").replace("'", '"')
@@ -65,11 +70,24 @@ def get_player_data(responses) -> pd.DataFrame:
 
 
 async def fetch(url, session):
+    """
+    asynchronously fetches url with given client session
+    returns a byte array response
+    Arguments:
+        url: url to be fetched
+        session: existing client session
+    """
     async with session.get(url) as response:
         return await response.read()
 
 
 async def run(year: int, pids: [int]):
+    """
+    method to run async event loop
+    Arguments:
+        year: active nba season
+        pids: list of player ids to be fetched
+    """
     url = _BASE_ENDPOINT + _PROFILE_ENDPOINT
     tasks = []
 
@@ -86,6 +104,12 @@ async def run(year: int, pids: [int]):
 
 
 def construct(year, pids):
+    """
+    Final async call for construction of player data
+    Arguments:
+        year: active nba season
+        pids: list of player ids to be fetched
+    """
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     future = asyncio.ensure_future(run(year, pids))
@@ -94,6 +118,9 @@ def construct(year, pids):
 
 
 def generate_data():
+    """
+    Updates data.csv with latest pulled changes from construct
+    """
     player_df = get_players_df(2018)
     stats_df = construct(2018, player_df["PlayerID"])
     stats_df['NAME'] = player_df['FirstName'] + " " + player_df['LastName']

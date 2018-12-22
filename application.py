@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from rank import get_rankings
 from generate import generate_data
+from datetime import datetime, timedelta
 import pandas as pd
+import os.path, time
 
 application = Flask(__name__)
 
@@ -42,7 +44,16 @@ def home():
 
 @application.route("/update")
 def update():
-    generate_data()
+    """
+    Purpose: subdomain for updating player data
+    """
+    ctime_template = "%a %b %d %H:%M:%S %Y"
+    current_date = datetime.strptime(time.ctime(), ctime_template)
+    last_updated = datetime.strptime(
+        time.ctime(os.path.getmtime("data.csv")), ctime_template)
+    # only update file if more than a day old
+    if current_date - last_updated > timedelta(days=1):
+        generate_data()
     return redirect(url_for('home'))
 
 
@@ -53,4 +64,5 @@ def n_games():
 
 
 if __name__ == "__main__":
+    #TODO: unset debug when web app is finalized (production ready)
     application.run(debug=True)
