@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from rank import get_rankings
 from generate import generate_data
 import pandas as pd
@@ -35,13 +35,15 @@ def home():
     if request.args.get("TPG", 1, int) == 1:
         col_names.append("TPG")
 
-    ## get latest data if no query params are given
-    if len(request.args) == 0:
-        generate_data()
-    ## read data
     data = pd.read_csv("data.csv")
     ranks = get_rankings(data, col_names, n_results)
     return render_template("home.html", col_names=list(ranks), ranks=ranks)
+
+
+@application.route("/update")
+def update():
+    generate_data()
+    return redirect(url_for('home'))
 
 
 #TODO: player cards
